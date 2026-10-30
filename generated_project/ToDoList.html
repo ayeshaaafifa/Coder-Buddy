@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>TodoMaster</title>
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: "Segoe UI", Arial, sans-serif; background: #f4f4f4; padding: 2rem 1rem; }
+  .app { max-width: 540px; margin: 0 auto; }
+  h1 {
+    background: #4a90e2; color: #fff; text-align: center;
+    font-size: 2rem; padding: 1rem; border-radius: 10px; margin-bottom: 1rem;
+  }
+  .add { display: flex; gap: 10px; margin-bottom: 1rem; }
+  .add input {
+    flex: 1; min-width: 0; height: 48px; padding: 0 14px; font-size: 1rem;
+    border: 1px solid #ccc; border-radius: 6px;
+  }
+  .add input:focus { outline: 2px solid #4a90e2; border-color: transparent; }
+  .add button {
+    height: 48px; padding: 0 20px; font-size: 1rem; color: #fff; cursor: pointer;
+    background: #4a90e2; border: none; border-radius: 6px;
+  }
+  .add button:hover { background: #3a7bc8; }
+  #msg { color: #dc2626; min-height: 1.2em; margin-bottom: .5rem; font-size: .9rem; }
+  ul { list-style: none; }
+  li {
+    display: flex; align-items: center; gap: 10px;
+    background: #fff; padding: 12px 14px; margin-bottom: 8px;
+    border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,.1);
+  }
+  li span { flex: 1; word-break: break-word; cursor: pointer; }
+  li.done span { text-decoration: line-through; color: #9ca3af; }
+  li input[type=checkbox] { width: 18px; height: 18px; cursor: pointer; }
+  li button {
+    background: #dc2626; color: #fff; border: none; border-radius: 6px;
+    padding: 6px 12px; cursor: pointer;
+  }
+  .count { color: #555; margin-top: .75rem; font-size: .95rem; }
+</style>
+</head>
+<body>
+  <div class="app">
+    <h1>TodoMaster</h1>
+    <div class="add">
+      <input id="taskInput" type="text" placeholder="Write a task..." autocomplete="off" />
+      <button id="addBtn" type="button">Add Task</button>
+    </div>
+    <div id="msg"></div>
+    <ul id="taskList"></ul>
+    <div class="count" id="count"></div>
+  </div>
+
+<script>
+  // Script is at the end of <body>, so all elements already exist.
+  const input = document.getElementById('taskInput');
+  const addBtn = document.getElementById('addBtn');
+  const list = document.getElementById('taskList');
+  const msg = document.getElementById('msg');
+  const count = document.getElementById('count');
+
+  let tasks = [];
+  try { tasks = JSON.parse(localStorage.getItem('todomaster') || '[]'); } catch (e) { tasks = []; }
+
+  function save() {
+    try { localStorage.setItem('todomaster', JSON.stringify(tasks)); } catch (e) {}
+  }
+
+  function render() {
+    list.innerHTML = '';
+    tasks.forEach((t, i) => {
+      const li = document.createElement('li');
+      if (t.done) li.classList.add('done');
+
+      const cb = document.createElement('input');
+      cb.type = 'checkbox';
+      cb.checked = t.done;
+      cb.addEventListener('change', () => { tasks[i].done = cb.checked; save(); render(); });
+
+      const span = document.createElement('span');
+      span.textContent = t.text;
+      span.addEventListener('click', () => { tasks[i].done = !tasks[i].done; save(); render(); });
+
+      const del = document.createElement('button');
+      del.textContent = 'Delete';
+      del.addEventListener('click', () => { tasks.splice(i, 1); save(); render(); });
+
+      li.append(cb, span, del);
+      list.appendChild(li);
+    });
+    const left = tasks.filter(t => !t.done).length;
+    count.textContent = tasks.length ? left + ' of ' + tasks.length + ' tasks left' : 'No tasks yet';
+  }
+
+  function addTask() {
+    const text = input.value.trim();
+    if (!text) { msg.textContent = 'Please write a task first.'; return; }
+    msg.textContent = '';
+    tasks.push({ text: text, done: false });
+    save();
+    input.value = '';
+    input.focus();
+    render();
+  }
+
+  addBtn.addEventListener('click', addTask);
+  input.addEventListener('keydown', e => { if (e.key === 'Enter') addTask(); });
+  render();
+</script>
+</body>
+</html>

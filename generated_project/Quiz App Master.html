@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>QuizMaster | Interactive Quiz</title>
+
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+</head>
+
+<body>
+
+    <header class="navbar">
+        <a href="#" class="logo">Quiz<span>Master</span></a>
+        <span class="nav-label">Test Your Knowledge</span>
+    </header>
+
+    <main class="main-container">
+
+        <section class="hero">
+            <span class="badge">✨ LEARN • PLAY • GROW</span>
+
+            <h1>Challenge Your <span>Mind.</span></h1>
+
+            <p>
+                Test your knowledge, explore new topics,
+                and discover how much you really know.
+            </p>
+        </section>
+
+        <section class="quiz-card" id="quiz-container">
+
+            <!-- Welcome Screen -->
+            <div id="welcome-screen">
+                <div class="quiz-icon">🧠</div>
+
+                <h2>Ready to Play?</h2>
+
+                <p class="description">
+                    Answer 5 multiple-choice questions and
+                    see how well you perform.
+                </p>
+
+                <div class="quiz-info">
+                    <div class="info-box">
+                        <span class="info-icon">📝</span>
+                        <strong>5</strong>
+                        <small>Questions</small>
+                    </div>
+
+                    <div class="info-box">
+                        <span class="info-icon">🎯</span>
+                        <strong>MCQs</strong>
+                        <small>Quiz Type</small>
+                    </div>
+
+                    <div class="info-box">
+                        <span class="info-icon">🏆</span>
+                        <strong>Score</strong>
+                        <small>Track Results</small>
+                    </div>
+                </div>
+
+                <button id="start-btn" class="primary-btn">
+                    Start Quiz <span>→</span>
+                </button>
+            </div>
+
+            <!-- Quiz Screen -->
+            <div id="question-screen" hidden>
+
+                <div class="quiz-top">
+                    <span id="question-counter">Question 1 of 5</span>
+                    <span id="score-display">Score: 0</span>
+                </div>
+
+                <div class="progress-track">
+                    <div id="progress-bar"></div>
+                </div>
+
+                <h2 id="question-text">Question goes here</h2>
+
+                <div id="options-container"></div>
+
+                <p id="feedback" aria-live="polite"></p>
+
+                <button id="next-btn" class="primary-btn" hidden>
+                    Next Question →
+                </button>
+
+            </div>
+
+            <!-- Result Screen -->
+            <div id="result-screen" hidden>
+                <div class="result-icon">🏆</div>
+
+                <h2 id="result-title">Quiz Completed!</h2>
+
+                <p id="result-message"></p>
+
+                <div class="result-score">
+                    <span id="final-score">0/5</span>
+                    <small>Your Final Score</small>
+                </div>
+
+                <button id="restart-btn" class="primary-btn">
+                    Try Again ↻
+                </button>
+            </div>
+
+        </section>
+
+        <footer>
+            <p>Made for curious minds. Keep learning, keep growing.</p>
+        </footer>
+
+    </main>
+
+</body>
+</html>
